@@ -1,0 +1,2 @@
+class BufferControl:
+    pass
