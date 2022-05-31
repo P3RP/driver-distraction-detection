@@ -1,3 +1,5 @@
+import numpy as np
+
 import math
 
 
@@ -56,3 +58,20 @@ class BaseBuffer:
 
     def stay(self):
         self.last_glance = True
+
+    def update_new(self, time, **kwargs):
+        pass
+
+    @staticmethod
+    def weight(v, s):
+        w = 0.5
+        a = 1 + np.exp(-0.3 * (v - s - (10 + (s / 10))))
+        b = 1 + np.exp(-0.3 * (v - s + (10 + (s / 10))))
+        w += 0.5 * (2 / a + 1 / b)
+        return w
+
+    def tow(self):
+        if self.last_glance:
+            pass
+        else:
+            pass
