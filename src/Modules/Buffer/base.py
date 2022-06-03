@@ -11,6 +11,7 @@ class BaseBuffer:
     buffer = 1
     last_glance = True
 
+    # def __init__(self, name, down_p, ):
     def update(self, gaze, time):
         # 시선이 해당 영역에 있는 경우
         if gaze == self.code:

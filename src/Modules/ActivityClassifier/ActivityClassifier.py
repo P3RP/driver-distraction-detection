@@ -9,7 +9,7 @@ from .model import DDDModel
 class ActivityClassifier:
     IMG_SIZE: tuple = (64, 64)
 
-    def __init__(self, weight):
+    def __init__(self, weight_path):
         # ------------------------------------------------------
         # 추론을 위한 모델 생성
         # 장비 설정
@@ -18,7 +18,7 @@ class ActivityClassifier:
         # Model 설정
         self.model = DDDModel(input_size=3, num_classes=10)
         self.model = self.model.to(self.device)
-        self.model.load_state_dict(torch.load(weight, map_location=self.device))
+        self.model.load_state_dict(torch.load(weight_path, map_location=self.device))
         self.model.eval()
 
     def predict(self, img):
@@ -31,4 +31,4 @@ class ActivityClassifier:
 
         # 이미지 추론
         result = self.model(img_tensor)
-        return result.argmax()
+        return int(result.argmax())

@@ -11,11 +11,13 @@ import pyqtgraph as pg
 from src.utils.dirutil import get_root_path
 from src.utils.envutil import get_env
 from src.Modules import FrameSource
+from src.Modules import ActivityClassifier
 
 
 # CONFIG
 config = json.load(open(get_root_path() + '/GUI/config/config.json', 'r'))      # 상황별 색 설정
 ui_src = get_root_path() + '/GUI/config/main.ui'    # UI source 경로
+weight_path = get_root_path() + '/Modules/ActivityClassifier/weight/final.pth'
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -63,6 +65,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.o_y = []   # 기존 알고리즘 Y 값 (Buffer 값)
         self.n_x = []   # 개선 알고리즘 X 값 (시간 값)
         self.n_y = []   # 개선 알고리즘 Y 값 (Buffer 값)
+
+        # ------------------------------------------------------
+        # 행동 분류 모델 생성
+        self.act_classifier = ActivityClassifier(weight_path=weight_path)
 
     def start(self):
         """
@@ -163,7 +169,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # ------------------------------------------------------
         # 측면 사진을 통해 행동 추론 및 라벨 수정
         # TODO: 행동 추론
-        activity = int(now) % 10
+        # activity = int(now) % 10
+        activity = self.act_classifier.predict(side_frame)
 
         # 행동 라벨 수정
         act_label = config['activity'][str(activity)]

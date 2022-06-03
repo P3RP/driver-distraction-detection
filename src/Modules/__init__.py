@@ -1,3 +1,2 @@
 from .FrameSource import FrameSource
-
-from .RealTimeCamera import RealTimeCamera
+from .ActivityClassifier import ActivityClassifier
