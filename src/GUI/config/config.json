@@ -1,0 +1,12 @@
+{
+    "status": {
+        "safe": {
+            "msg": "Safe",
+            "style": "background-color: green;"
+        },
+        "distract": {
+            "msg": "Distracted",
+            "style": "background-color: red;"
+        }
+    }
+}
