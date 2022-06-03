@@ -32,23 +32,23 @@
             "msg": "Talking on the phone",
             "style": "background-color: lightpink; color: #000000;"
         },
-        "3": {
+        "33": {
             "msg": "Texting",
             "style": "background-color: lightcoral; color: #000000;"
         },
-        "4": {
+        "44": {
             "msg": "Talking on the phone",
             "style": "background-color: lightpink; color: #000000;"
         },
-        "5": {
+        "3": {
             "msg": "Operating the radio",
             "style": "background-color: lightblue; color: #000000;"
         },
-        "6": {
+        "4": {
             "msg": "Drinking",
             "style": "background-color: lightcyan; color: #000000;"
         },
-        "7": {
+        "5": {
             "msg": "Reaching behind",
             "style": "background-color: lightslategray; color: #000000;"
         },
@@ -62,6 +62,10 @@
         }
     },
     "gaze": {
+        "-1": {
+            "msg": "NDRA",
+            "style": "background-color: lightcoral; color: #000000;"
+        },
         "0": {
             "msg": "Front",
             "style": "background-color: lightgreen; color: #000000;"

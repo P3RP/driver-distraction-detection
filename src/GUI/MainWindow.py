@@ -2,6 +2,7 @@ import time
 import json
 import random
 
+import cv2
 import numpy as np
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import QTimer
@@ -12,6 +13,9 @@ from src.utils.dirutil import get_root_path
 from src.utils.envutil import get_env
 from src.Modules import FrameSource
 from src.Modules import ActivityClassifier
+
+from src.fake.ActivityBuffer import ActivityBuffer
+from src.fake.GazeBuffer import GazeBuffer
 
 
 # CONFIG
@@ -35,8 +39,10 @@ class MainWindow(QtWidgets.QMainWindow):
         # ------------------------------------------------------
         # 필요한 변수 설정
         self.s_time = None          # 시작 시간 관리
+        self.pre_time = None        # 이전 프레임 시간 관리
         self.timer = None           # 작동 Frame 관리
         self.interval = interval    # Frame 간격 관리
+        self.n = 0                  # Frame 수
 
         # ------------------------------------------------------
         # GUI 영역 세팅
@@ -68,7 +74,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ------------------------------------------------------
         # 행동 분류 모델 생성
-        self.act_classifier = ActivityClassifier(weight_path=weight_path)
+        # self.act_classifier = ActivityClassifier(weight_path=weight_path)
+        self.act_classifier = ActivityClassifier(weight_path=weight_path, num_classes=6)
+
+        # ------------------------------------------------------
+        # 버퍼 세팅
+        self.act_buffer = ActivityBuffer()
+        self.gaze_buffer = GazeBuffer()
 
     def start(self):
         """
@@ -76,6 +88,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         # 시작 시간 설정
         self.s_time = time.time()
+        self.pre_time = 0
 
         # 카메라 작동 시작
         self.cam_f.start()
@@ -140,20 +153,21 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         # 프레임 간 시간 설정
         now = time.time() - self.s_time
+        self.n += 1
 
         # ------------------------------------------------------
         # 카메라 화면 설정
         # 정면 카메라 화면 설정
         front_frame = self.cam_f.next_frame()
-        self.display_image(self.opencv_to_qt(front_frame), window="front_cam")
+        self.display_image(self.opencv_to_qt(cv2.flip(front_frame, 1)), window="front_cam")
 
         # 측면 카메라 화면 설정
         side_frame = self.cam_s.next_frame()
-        self.display_image(self.opencv_to_qt(side_frame), window="side_cam")
+        self.display_image(self.opencv_to_qt(cv2.flip(side_frame, 1)), window="side_cam")
 
         # ------------------------------------------------------
         # 운전 상황에 대한 Label 설정
-        env = get_env(now)     # 운전 상황 가져오기
+        env = get_env(self.n)     # 운전 상황 가져오기
 
         # 운전 상황에 맞는 설정 불러오기
         if env == 0:
@@ -168,8 +182,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ------------------------------------------------------
         # 측면 사진을 통해 행동 추론 및 라벨 수정
-        # TODO: 행동 추론
+        # 행동 추론
         # activity = int(now) % 10
+        # activity = self.act_classifier.predict(side_frame)
         activity = self.act_classifier.predict(side_frame)
 
         # 행동 라벨 수정
@@ -178,22 +193,34 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ------------------------------------------------------
         # 정면 사진을 통해 시선 영역 추록 및 라벨 수정
-        # TODO: 시선 영역 추록
-        gaze_zone = int(now) % 7
+        # TODO: 시선 영역 추론
+        # gaze_zone = int(now) % 7
+        from src.fake.gaze import gaze
+        gaze_zone = gaze(self.n)
 
         # 시선 라벨 수정
         gaze_label = config['gaze'][str(gaze_zone)]
         self.display_label("gaze", gaze_label['msg'], gaze_label['style'])
-        # self.display_label("activity", str(random.uniform(0.0, 1.0)), "background-color: green;")
 
         # ------------------------------------------------------
         # TODO: 행동과 시선을 통해 버퍼 데이터 업데이트
+        # 행동 버퍼 수정
+        self.act_buffer.update(env=str(env),
+                               gaze=str(gaze_zone),
+                               activity=str(activity),
+                               time=now-self.pre_time)
+
+        self.gaze_buffer.update(env=env,
+                                gaze=gaze_zone,
+                                activity=activity,
+                                time=now-self.pre_time)
 
         # ------------------------------------------------------
         # 각 차트에 데이터 넣기 및 라벨 설정
         # 1. AttenD Graph
         self.o_x.append(now)
-        o_data = random.uniform(0.0, 1.0)       # TODO : AttenD 버퍼 데이터 넣기
+        # o_data = random.uniform(0.0, 1.0)       # TODO : AttenD 버퍼 데이터 넣기
+        o_data = self.gaze_buffer.buffer
         self.o_y.append(o_data)
         # 라벨 설정
         if o_data < 0.2:
@@ -204,7 +231,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # 2. 개선 Graph
         self.n_x.append(now)
-        n_data = random.uniform(0.0, 1.0)       # TODO : 개선 버퍼 데이터 넣기
+        # n_data = random.uniform(0.0, 1.0)       # TODO : 개선 버퍼 데이터 넣기
+        n_data = self.act_buffer.buffer * self.gaze_buffer.buffer
         self.n_y.append(n_data)
         # 라벨 설정
         if n_data < 0.2:
@@ -215,6 +243,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # 차트 업데이트
         self.update_chart()
+
+        self.pre_time = now
 
     @staticmethod
     def opencv_to_qt(img) -> QImage:

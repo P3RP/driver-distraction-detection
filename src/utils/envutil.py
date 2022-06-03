@@ -1,4 +1,4 @@
 def get_env(duration):
-    if 68 <= duration < 98:
+    if 1120 <= duration:
         return 1
     return 0
