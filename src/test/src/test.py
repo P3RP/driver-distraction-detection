@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from src.buffer import *
+from src.test.src.buffer import *
 
 
 def gaze(now):
@@ -152,14 +152,14 @@ if __name__ == "__main__":
     plt.gca().spines['left'].set_visible(False)  # 위 테두리 제거
     plt.yticks(ticks=[])  # y축 tick 제거
     plt.xticks(ticks=[])  # y축 tick 제거
-    # col = 1
-    # # plt.plot(times, result[0])
-    # # for i in range(5):
-    # #     plt.plot(times, result[i], color=color[i], linewidth='10')
-    # # plt.plot(back, result[5], color=color[5], linewidth='10')
-    # # plt.plot(back, result[6], color=color[6], linewidth='10')
-    # plt.plot(times, act, linewidth='10', color="#000000")
-    # plt.plot(times, main, linewidth='10', color="#000000")
+    col = 1
+    # plt.plot(times, result[0])
+    for i in range(5):
+        plt.plot(times, result[i], color=color[i], linewidth='10')
+    plt.plot(back, result[5], color=color[5], linewidth='10')
+    plt.plot(back, result[6], color=color[6], linewidth='10')
+    plt.plot(times, act, linewidth='10', color="#000000")
+    plt.plot(times, main, linewidth='10', color="#000000")
     plt.plot(times, up, linewidth='10', color="#000000")
     # # plt.plot(back, result[5], linewidth='10')
     plt.savefig('myfigure.png', transparent=True)

@@ -13,8 +13,7 @@ class BaseBuffer:
     buffer = 1
     last_glance = True
 
-    # def __init__(self, name, down_p, ):
-    def update(self, gaze, time):
+    def update_old(self, gaze, time):
         # 시선이 해당 영역에 있는 경우
         if gaze == self.code:
             # 이전 시선 역시 이 Buffer인 경우
@@ -58,9 +57,6 @@ class BaseBuffer:
 
     def stay(self):
         self.last_glance = True
-
-    def update_new(self, time, **kwargs):
-        pass
 
     @staticmethod
     def weight(v, s):
