@@ -21,6 +21,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, cam_f: FrameSource, cam_s: FrameSource, interval: int, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
+        # ------------------------------------------------------
+        # GUI 세팅
+        # Qt Designer에서 생성한 UI 파일 불러오기
+        uic.loadUi(ui_src, self)
+
+        # Window Title 세팅
         self.setWindowTitle('Driver Distraction Detection')
 
         # ------------------------------------------------------
@@ -28,9 +34,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.s_time = None          # 시작 시간 관리
         self.timer = None           # 작동 Frame 관리
         self.interval = interval    # Frame 간격 관리
-
-        # Qt Designer에서 생성한 UI 파일 불러오기
-        uic.loadUi(ui_src, self)
 
         # ------------------------------------------------------
         # GUI 영역 세팅
