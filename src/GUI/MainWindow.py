@@ -21,6 +21,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, cam_f: FrameSource, cam_s: FrameSource, interval: int, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
+        self.setWindowTitle('Driver Distraction Detection')
+
         # ------------------------------------------------------
         # 필요한 변수 설정
         self.s_time = None          # 시작 시간 관리
