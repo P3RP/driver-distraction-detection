@@ -9,6 +9,7 @@ from PyQt5.QtGui import QImage, QPixmap
 import pyqtgraph as pg
 
 from src.utils.dirutil import get_root_path
+from src.utils.envutil import get_env
 from src.Modules import FrameSource
 
 
@@ -131,6 +132,9 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         매 프레임마다 GUI 상황을 업데이트해주는 함수
         """
+        # 프레임 간 시간 설정
+        now = time.time() - self.s_time
+
         # ------------------------------------------------------
         # 카메라 화면 설정
         # 정면 카메라 화면 설정
@@ -142,8 +146,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display_image(self.opencv_to_qt(side_frame), window="side_cam")
 
         # ------------------------------------------------------
-        # TODO: 운전 상황에 대한 Label 설정
-        env = 0     # 운전 상황 가져오기
+        # 운전 상황에 대한 Label 설정
+        env = get_env(now)     # 운전 상황 가져오기
 
         # 운전 상황에 맞는 설정 불러오기
         if env == 0:
@@ -157,8 +161,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display_label("driving", driving_case['msg'], driving_case['style'])
 
         # ------------------------------------------------------
-        now = time.time() - self.s_time
-
         # 측면 사진을 통해 행동 추론 및 라벨 수정
         # TODO: 행동 추론
         activity = int(now) % 10
@@ -182,8 +184,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ------------------------------------------------------
         # 각 차트에 데이터 넣기 및 라벨 설정
-        now = time.time() - self.s_time
-
         # 1. AttenD Graph
         self.o_x.append(now)
         o_data = random.uniform(0.0, 1.0)       # TODO : AttenD 버퍼 데이터 넣기
