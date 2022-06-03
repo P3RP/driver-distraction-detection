@@ -137,11 +137,39 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display_image(self.opencv_to_qt(side_frame), window="side_cam")
 
         # ------------------------------------------------------
-        # TODO: 측면 사진을 통해 행동 추론
-        # self.display_label("activity", str(random.uniform(0.0, 1.0)), "background-color: green;")
+        # TODO: 운전 상황에 대한 Label 설정
+        env = 0     # 운전 상황 가져오기
+
+        # 운전 상황에 맞는 설정 불러오기
+        if env == 0:
+            driving_case = config['driving']['forward']
+        elif env == 1:
+            driving_case = config['driving']['backward']
+        else:
+            driving_case = config['driving']['forward']
+
+        # Label 수정
+        self.display_label("driving", driving_case['msg'], driving_case['style'])
 
         # ------------------------------------------------------
-        # TODO: 정면 사진을 통해 시선 영역 추록
+        now = time.time() - self.s_time
+
+        # 측면 사진을 통해 행동 추론 및 라벨 수정
+        # TODO: 행동 추론
+        activity = int(now) % 10
+
+        # 행동 라벨 수정
+        act_label = config['activity'][str(activity)]
+        self.display_label("activity", act_label['msg'], act_label['style'])
+
+        # ------------------------------------------------------
+        # 정면 사진을 통해 시선 영역 추록 및 라벨 수정
+        # TODO: 시선 영역 추록
+        gaze_zone = int(now) % 7
+
+        # 시선 라벨 수정
+        gaze_label = config['gaze'][str(gaze_zone)]
+        self.display_label("gaze", gaze_label['msg'], gaze_label['style'])
         # self.display_label("activity", str(random.uniform(0.0, 1.0)), "background-color: green;")
 
         # ------------------------------------------------------
@@ -157,19 +185,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.o_y.append(o_data)
         # 라벨 설정
         if o_data < 0.2:
-            self.display_label("o_status", config['status']['distract']['msg'], config['status']['distract']['style'])
+            o_case = config['status']['distract']
         else:
-            self.display_label("o_status", config['status']['safe']['msg'], config['status']['safe']['style'])
+            o_case = config['status']['safe']
+        self.display_label("o_status", o_case['msg'], o_case['style'])
 
-        # 개선 Graph
+        # 2. 개선 Graph
         self.n_x.append(now)
         n_data = random.uniform(0.0, 1.0)       # TODO : 개선 버퍼 데이터 넣기
         self.n_y.append(n_data)
         # 라벨 설정
         if n_data < 0.2:
-            self.display_label("n_status", config['status']['distract']['msg'], config['status']['distract']['style'])
+            n_case = config['status']['distract']
         else:
-            self.display_label("n_status", config['status']['safe']['msg'], config['status']['safe']['style'])
+            n_case = config['status']['safe']
+        self.display_label("n_status", n_case['msg'], n_case['style'])
 
         # 차트 업데이트
         self.update_chart()

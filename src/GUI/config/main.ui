@@ -405,15 +405,15 @@ color: rgb(0, 0, 0);</string>
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>340</y>
+      <y>360</y>
       <width>151</width>
-      <height>91</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Nanum Gothic</family>
-      <pointsize>16</pointsize>
+      <pointsize>18</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -421,7 +421,8 @@ color: rgb(0, 0, 0);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 2px solid rgb(0, 0, 0);
-font: 16pt &quot;Nanum Gothic&quot;;</string>
+font: 18pt &quot;Nanum Gothic&quot;;
+color: rgb(0, 0, 0);</string>
     </property>
     <property name="text">
      <string>Driving</string>
@@ -434,9 +435,9 @@ font: 16pt &quot;Nanum Gothic&quot;;</string>
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>340</y>
+      <y>360</y>
       <width>91</width>
-      <height>91</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
