@@ -1,0 +1,98 @@
+{
+    "status": {
+        "safe": {
+            "msg": "Safe",
+            "style": "background-color: green; color: #000000;"
+        },
+        "distract": {
+            "msg": "Distracted",
+            "style": "background-color: red; color: #000000;"
+        }
+    },
+    "driving": {
+        "forward": {
+            "msg": "Forward",
+            "style": "background-color: lightgreen; color: #000000;"
+        },
+        "backward": {
+            "msg": "Backward",
+            "style": "background-color: lightskyblue; color: #000000;"
+        }
+    },
+    "activity": {
+        "0": {
+            "msg": "Safe Driving",
+            "style": "background-color: lightgreen; color: #000000;"
+        },
+        "1": {
+            "msg": "Texting",
+            "style": "background-color: lightcoral; color: #000000;"
+        },
+        "2": {
+            "msg": "Talking on the phone",
+            "style": "background-color: lightpink; color: #000000;"
+        },
+        "33": {
+            "msg": "Texting",
+            "style": "background-color: lightcoral; color: #000000;"
+        },
+        "44": {
+            "msg": "Talking on the phone",
+            "style": "background-color: lightpink; color: #000000;"
+        },
+        "3": {
+            "msg": "Operating the radio",
+            "style": "background-color: lightblue; color: #000000;"
+        },
+        "4": {
+            "msg": "Drinking",
+            "style": "background-color: lightcyan; color: #000000;"
+        },
+        "5": {
+            "msg": "Reaching behind",
+            "style": "background-color: lightslategray; color: #000000;"
+        },
+        "8": {
+            "msg": "Hair and makeup",
+            "style": "background-color: lightyellow; color: #000000;"
+        },
+        "9": {
+            "msg": "Taking to passenger",
+            "style": "background-color: violet; color: #000000;"
+        }
+    },
+    "gaze": {
+        "-1": {
+            "msg": "NDRA",
+            "style": "background-color: lightcoral; color: #000000;"
+        },
+        "0": {
+            "msg": "Front",
+            "style": "background-color: lightgreen; color: #000000;"
+        },
+        "1": {
+            "msg": "Speed meter",
+            "style": "background-color: lightyellow; color: #000000;"
+        },
+        "2": {
+            "msg": "Rearview Mirro",
+            "style": "background-color: lightpink; color: #000000;"
+        },
+        "3": {
+            "msg": "Left (Side-view mirror)",
+            "style": "background-color: peachpuff; color: #000000;"
+        },
+        "4": {
+            "msg": "Right (Side-view mirror)",
+            "style": "background-color: lightpink; color: #000000;"
+        },
+        "5": {
+            "msg": "Rear-Camera",
+            "style": "background-color: lightblue; color: #000000;"
+        },
+        "6": {
+            "msg": "Rear",
+            "style": "background-color: lightcyan; color: #000000;"
+        }
+    }
+}

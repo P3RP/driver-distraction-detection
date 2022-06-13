@@ -1,3 +1,5 @@
+import numpy as np
+
 import math
 
 
@@ -11,7 +13,7 @@ class BaseBuffer:
     buffer = 1
     last_glance = True
 
-    def update(self, gaze, time):
+    def update_old(self, gaze, time):
         # 시선이 해당 영역에 있는 경우
         if gaze == self.code:
             # 이전 시선 역시 이 Buffer인 경우
@@ -55,3 +57,17 @@ class BaseBuffer:
 
     def stay(self):
         self.last_glance = True
+
+    @staticmethod
+    def weight(v, s):
+        w = 0.5
+        a = 1 + np.exp(-0.3 * (v - s - (10 + (s / 10))))
+        b = 1 + np.exp(-0.3 * (v - s + (10 + (s / 10))))
+        w += 0.5 * (2 / a + 1 / b)
+        return w
+
+    def tow(self):
+        if self.last_glance:
+            pass
+        else:
+            pass

@@ -1,3 +1,9 @@
+test
+test_env
+data
+*.pth
+src/fake/
+
 ### macOS ###
 # General
 .DS_Store
